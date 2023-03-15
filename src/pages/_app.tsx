@@ -28,6 +28,7 @@ export default function App({ Component, pageProps }: AppProps) {
     }
     getCsrfToken()
   }, [])
+  
   return (
     <QueryClientProvider client={queryClient}>
       <MantineProvider
