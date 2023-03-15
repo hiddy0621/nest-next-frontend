@@ -16,12 +16,20 @@ import {
   Alert,
 } from '@mantine/core'
 import { useForm, yupResolver } from '@mantine/form'
-import { AuthForm } from '../types'
 import { Layout } from '@/components/Layout'
+import UserInfo from '@/components/UserInfo'
+import { useQueryClient } from '@tanstack/react-query'
+import TaskForm from '@/components/TaskForm'
+import TaskList from '@/components/TaskList'
 
 export default function Dashboard() {
   const router = useRouter()
+  const queryClient = useQueryClient()
+
   const logout = async () => {
+    // ユーザーデータのキャッシュを残さないように消す
+    queryClient.removeQueries(['use'])
+    queryClient.removeQueries(['tasks'])
     await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`)
     router.push('/')
   }
@@ -32,6 +40,9 @@ export default function Dashboard() {
         className="mb-6 h-6 w-6 cursor-pointer text-blue-500"
         onClick={logout}
       />
+      <TaskForm />
+      <TaskList />
+      <UserInfo />
     </Layout>
   )
 }
